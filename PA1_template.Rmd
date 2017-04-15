@@ -8,18 +8,102 @@ output:
 
 ## Loading and preprocessing the data
 
+Loading libraries  
+using readr to set the data in tabular format in one step
+```{r}
+library(readr)
+library(dplyr)
+library(lattice)
+activity <- read_csv("activity.zip")
+```
 
 
 ## What is mean total number of steps taken per day?
+```{r}
+meanSteps <-mean(activity$steps, na.rm = TRUE)
+```
+The average mean steps is `r meanSteps`
 
+ Histogram of the total number of steps taken each day
+```{r}
 
+actDay <- summarize(group_by(activity, date), steps=sum(steps, na.rm = TRUE))
+
+with( actDay, hist(steps, breaks = 10))
+```
+
+Mean and median number of steps taken each day
+```{r}
+actDayMM <- summarize(group_by(activity, date), stepsMean=mean(steps, na.rm = TRUE), stepsMedian=median(steps, na.rm = TRUE))
+actDayMM
+```
 
 ## What is the average daily activity pattern?
+Time series plot of the average number of steps taken
+
+```{r}
+actInt <- summarize(group_by(activity, interval), steps=mean(steps, na.rm = TRUE))
+
+with(actInt, plot (interval, steps, type="l", col="blue", lwd=3,main = "Average Steps by Interval accross all days"))
+```
 
 
+The 5-minute interval that, on average, contains the maximum number of steps
+```{r}
+MaxSteps <- actInt[actInt$steps==max(actInt$steps),]
+MaxSteps
+```
+The maximum average number of steps is `r MaxSteps$steps` in the Interval `r MaxSteps$interval`
 
 ## Imputing missing values
 
+Code to describe and show a strategy for imputing missing data
 
+```{r}
+stepsNA <- is.na(activity$steps)
+NumberStepsNA <- sum(stepsNA)
+PercStepsNA <- NumberStepsNA/count(activity)*100
+```
+There are `r NumberStepsNA` records with NAs that represents a `r PercStepsNA` Percent.
+
+The strategy to fill in these values consist in replacing them with the average value for the correspoding interval 
+
+Let's create a new dataset that is equal to the original dataset but with the missing data filled in.
+
+```{r}
+actFIL <- activity
+# filling in the missing values
+for (i in actInt$interval) actFIL[stepsNA & actFIL$interval==i, 1] <- actInt[actInt$interval==i, "steps"]  
+# validation
+activity[actFIL$interval==5, ]
+actFIL[actFIL$interval==5, ]
+```
+
+
+Histogram of the total number of steps taken each day after missing values are imputed
+```{r}
+actFilDay <- summarize(group_by(actFIL, date), steps=sum(steps, na.rm = TRUE))
+
+with( actFilDay, hist(steps, breaks = 10, main = "Histogram of Steps without NAs"))
+```
+
+Let's Calculate and report the mean and median total number of steps taken per day. 
+```{r}
+actFilDayMM <- summarize(group_by(actFIL, date), stepsMean=mean(steps, na.rm = TRUE), stepsMedian=median(steps, na.rm = TRUE))
+actFilDayMM
+```
+Comparing this results with the Histogram, mean and median obtained before replacing NAs we realize there are some major changes in the data, which means one has to be very careful and conscious in how this change may affect the outcome. 
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+#### Panel plot comparing the average number of steps taken per 5-minute interval across weekdays and weekends
+
+First let's create  a new factor variable in the dataset with two levels -- "weekday" and "weekend" indicating whether a given date is a weekday or weekend day, then summarize the data table in order to produce the plot.
+
+```{r}
+actFIL$dayType <- ifelse( weekdays(actFIL$date) =="Saturday" | weekdays(actFIL$date) =="Sunday", "weekend","weekday")
+
+actFilWInt <- summarize(group_by(actFIL, dayType, interval), steps=mean(steps))
+
+xyplot(steps~interval |dayType, data = actFilWInt, layout=c(1,2), type="l")
+```
