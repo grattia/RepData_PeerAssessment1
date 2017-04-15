@@ -137,6 +137,8 @@ using readr to set the data in tabular format in one step from zip</p>
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
 <pre class="r"><code>library(lattice)
+
+# Reading data set
 activity &lt;- read_csv(&quot;activity.zip&quot;)</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
@@ -147,8 +149,6 @@ activity &lt;- read_csv(&quot;activity.zip&quot;)</code></pre>
 </div>
 <div id="what-is-mean-total-number-of-steps-taken-per-day" class="section level2">
 <h2>What is mean total number of steps taken per day?</h2>
-<pre class="r"><code>meanSteps &lt;-mean(activity$steps, na.rm = TRUE)</code></pre>
-<p>The average mean steps is 37.3825996</p>
 <p>Histogram of the total number of steps taken each day</p>
 <pre class="r"><code>actDay &lt;- summarize(group_by(activity, date), steps=sum(steps, na.rm = TRUE))
 

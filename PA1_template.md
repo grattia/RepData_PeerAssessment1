@@ -41,6 +41,8 @@ library(dplyr)
 
 ```r
 library(lattice)
+
+# Reading data set
 activity <- read_csv("activity.zip")
 ```
 
@@ -56,10 +58,6 @@ activity <- read_csv("activity.zip")
 
 ## What is mean total number of steps taken per day?
 
-```r
-meanSteps <-mean(activity$steps, na.rm = TRUE)
-```
-The average mean steps is 37.3825996
 
  Histogram of the total number of steps taken each day
 
@@ -69,7 +67,7 @@ actDay <- summarize(group_by(activity, date), steps=sum(steps, na.rm = TRUE))
 with( actDay, hist(steps, breaks = 10))
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
 
 Mean and median number of steps taken each day
 
@@ -99,7 +97,7 @@ actInt <- summarize(group_by(activity, interval), steps=mean(steps, na.rm = TRUE
 with(actInt, plot (interval, steps, type="l", col="blue", lwd=3,main = "Average Steps by Interval accross all days"))
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
 
 
 The 5-minute interval that, on average, contains the maximum number of steps
@@ -189,7 +187,7 @@ actFilDay <- summarize(group_by(actFIL, date), steps=sum(steps, na.rm = TRUE))
 with( actFilDay, hist(steps, breaks = 10, main = "Histogram of Steps without NAs"))
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
 
 Let's Calculate and report the mean and median total number of steps taken per day. 
 
@@ -225,4 +223,4 @@ actFilWInt <- summarize(group_by(actFIL, dayType, interval), steps=mean(steps))
 xyplot(steps~interval |dayType, data = actFilWInt, layout=c(1,2), type="l")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-10-1.png)<!-- -->

@@ -14,15 +14,14 @@ using readr to set the data in tabular format in one step from zip
 library(readr)
 library(dplyr)
 library(lattice)
+
+# Reading data set
 activity <- read_csv("activity.zip")
 ```
 
 
 ## What is mean total number of steps taken per day?
-```{r}
-meanSteps <-mean(activity$steps, na.rm = TRUE)
-```
-The average mean steps is `r meanSteps`
+
 
  Histogram of the total number of steps taken each day
 ```{r}
