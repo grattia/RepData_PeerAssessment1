@@ -9,7 +9,7 @@ output:
 ## Loading and preprocessing the data
 
 Loading libraries  
-using readr to set the data in tabular format in one step
+using readr to set the data in tabular format in one step from zip
 ```{r}
 library(readr)
 library(dplyr)
@@ -34,8 +34,8 @@ with( actDay, hist(steps, breaks = 10))
 
 Mean and median number of steps taken each day
 ```{r}
-actDayMM <- summarize(group_by(activity, date), stepsMean=mean(steps, na.rm = TRUE), stepsMedian=median(steps, na.rm = TRUE))
-actDayMM
+mean(actDay$steps, na.rm = TRUE)
+median(actDay$steps, na.rm = TRUE)
 ```
 
 ## What is the average daily activity pattern?
@@ -89,10 +89,10 @@ with( actFilDay, hist(steps, breaks = 10, main = "Histogram of Steps without NAs
 
 Let's Calculate and report the mean and median total number of steps taken per day. 
 ```{r}
-actFilDayMM <- summarize(group_by(actFIL, date), stepsMean=mean(steps, na.rm = TRUE), stepsMedian=median(steps, na.rm = TRUE))
-actFilDayMM
+mean(actFilDay$steps, na.rm = TRUE)
+median(actFilDay$steps, na.rm = TRUE)
 ```
-Comparing this results with the Histogram, mean and median obtained before replacing NAs we realize there are some major changes in the data, which means one has to be very careful and conscious in how this change may affect the outcome. 
+Comparing this results with the Histogram, mean and median obtained before replacing NAs we realize there are some  changes in the data, which means one has to be very careful and conscious in how this change may affect the outcome. 
 
 ## Are there differences in activity patterns between weekdays and weekends?
 

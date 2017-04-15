@@ -4,7 +4,7 @@
 ## Loading and preprocessing the data
 
 Loading libraries  
-using readr to set the data in tabular format in one step
+using readr to set the data in tabular format in one step from zip
 
 ```r
 library(readr)
@@ -74,25 +74,19 @@ with( actDay, hist(steps, breaks = 10))
 Mean and median number of steps taken each day
 
 ```r
-actDayMM <- summarize(group_by(activity, date), stepsMean=mean(steps, na.rm = TRUE), stepsMedian=median(steps, na.rm = TRUE))
-actDayMM
+mean(actDay$steps, na.rm = TRUE)
 ```
 
 ```
-## # A tibble: 61 × 3
-##          date stepsMean stepsMedian
-##        <date>     <dbl>       <dbl>
-## 1  2012-10-01       NaN          NA
-## 2  2012-10-02   0.43750           0
-## 3  2012-10-03  39.41667           0
-## 4  2012-10-04  42.06944           0
-## 5  2012-10-05  46.15972           0
-## 6  2012-10-06  53.54167           0
-## 7  2012-10-07  38.24653           0
-## 8  2012-10-08       NaN          NA
-## 9  2012-10-09  44.48264           0
-## 10 2012-10-10  34.37500           0
-## # ... with 51 more rows
+## [1] 9354.23
+```
+
+```r
+median(actDay$steps, na.rm = TRUE)
+```
+
+```
+## [1] 10395
 ```
 
 ## What is the average daily activity pattern?
@@ -200,27 +194,21 @@ with( actFilDay, hist(steps, breaks = 10, main = "Histogram of Steps without NAs
 Let's Calculate and report the mean and median total number of steps taken per day. 
 
 ```r
-actFilDayMM <- summarize(group_by(actFIL, date), stepsMean=mean(steps, na.rm = TRUE), stepsMedian=median(steps, na.rm = TRUE))
-actFilDayMM
+mean(actFilDay$steps, na.rm = TRUE)
 ```
 
 ```
-## # A tibble: 61 × 3
-##          date stepsMean stepsMedian
-##        <date>     <dbl>       <dbl>
-## 1  2012-10-01  37.38260    34.11321
-## 2  2012-10-02   0.43750     0.00000
-## 3  2012-10-03  39.41667     0.00000
-## 4  2012-10-04  42.06944     0.00000
-## 5  2012-10-05  46.15972     0.00000
-## 6  2012-10-06  53.54167     0.00000
-## 7  2012-10-07  38.24653     0.00000
-## 8  2012-10-08  37.38260    34.11321
-## 9  2012-10-09  44.48264     0.00000
-## 10 2012-10-10  34.37500     0.00000
-## # ... with 51 more rows
+## [1] 10766.19
 ```
-Comparing this results with the Histogram, mean and median obtained before replacing NAs we realize there are some major changes in the data, which means one has to be very careful and conscious in how this change may affect the outcome. 
+
+```r
+median(actFilDay$steps, na.rm = TRUE)
+```
+
+```
+## [1] 10766.19
+```
+Comparing this results with the Histogram, mean and median obtained before replacing NAs we realize there are some  changes in the data, which means one has to be very careful and conscious in how this change may affect the outcome. 
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
